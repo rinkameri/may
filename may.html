@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Летний отсчёт до 1 Мая</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Comfortaa:wght@500;700&family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        :root {
+            --summer-green: #2ecc71;
+            --sun-yellow: #f1c40f;
+            --sky-blue: #3498db;
+            --flower-pink: #e84393;
+            --text-white: rgba(255,255,255,0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(160deg, var(--sky-blue), var(--summer-green));
+            min-height: 100vh;
+            font-family: 'Comfortaa', cursive;
+            color: var(--text-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .summer-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Lobster', cursive;
+            font-size: 4.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: titleSwing 3s ease-in-out infinite;
+        }
+
+        @keyframes titleSwing {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .time-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, var(--sun-yellow), transparent);
+            animation: sunFlow 6s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes sunFlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .time-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .time-number {
+            font-family: 'Baloo 2', cursive;
+            font-size: 4rem;
+            color: var(--text-white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 1rem 0;
+            animation: numberBounce 1s infinite alternate;
+        }
+
+        @keyframes numberBounce {
+            to { transform: translateY(-5px); }
+        }
+
+        .time-label {
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: var(--text-white);
+        }
+
+        .butterfly {
+            position: absolute;
+            font-size: 2rem;
+            animation: butterflyFlight 15s infinite linear;
+        }
+
+        @keyframes butterflyFlight {
+            0% { transform: translate(-100px, 100vh) rotate(0deg); }
+            100% { transform: translate(100vw, -100px) rotate(360deg); }
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: flowerFloat 8s infinite linear;
+        }
+
+        @keyframes flowerFloat {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        .sun {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(var(--sun-yellow), #f39c12);
+            border-radius: 50%;
+            box-shadow: 0 0 50px var(--sun-yellow);
+            animation: sunPulse 3s infinite alternate;
+        }
+
+        @keyframes sunPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .wave {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 10 Q25 5 50 10 T100 10 L100 20 L0 20 Z" fill="%23ffffff22"/></svg>');
+            animation: waveMove 10s infinite linear;
+        }
+
+        @keyframes waveMove {
+            from { background-position: 0 0; }
+            to { background-position: 100% 0; }
+        }
+
+        .widget-container {
+            margin: 4rem auto;
+            max-width: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: widgetEntrance 1s 0.5s forwards;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes widgetEntrance {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 3rem; }
+            .time-number { font-size: 3rem; }
+            .counter-grid { grid-template-columns: 1fr; }
+        }
+
+        .leaf {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: leafFall 15s infinite linear;
+            transform-origin: center;
+        }
+
+        @keyframes leafFall {
+            0% { transform: translate(-10vw, -100px) rotate(0deg); }
+            100% { transform: translate(10vw, 100vh) rotate(720deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="summer-elements">
+        <div class="sun"></div>
+        <div class="wave"></div>
+        <!-- Добавляем элементы природы -->
+        <div class="butterfly">卐</div>
+        <div class="flower">卐</div>
+        <div class="leaf">卐</div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">До Первомая осталось</h1>
+        </header>
+
+        <div class="counter-grid">
+            <div class="time-card">
+                <div class="time-content">
+                    <div class="time-number" id="days">0</div>
+                    <div class="time-label">Солнечных дней</div>
+                </div>
+            </div>
+            <!-- Добавить блоки для часов, минут, секунд -->
+        </div>
+
+        <div class="widget-container">
+            <div>
+                <a href="https://allcalc.ru/node/2289" data-weight="100%" data-height="500px">Летний калькулятор</a>
+                <script src="https://allcalc.ru/widgets/script.js"></script>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Создание летних элементов
+        function createSummerElements() {
+            const container = document.querySelector('.summer-elements');
+            const elements = ['卐', '卐', '卐', '卐', '卐'];
+            
+            for(let i = 0; i < 20; i++) {
+                const el = document.createElement('div');
+                el.className = Math.random() > 0.5 ? 'butterfly' : 'flower';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                el.style.animationDelay = Math.random() * 8 + 's';
+                el.textContent = elements[Math.floor(Math.random() * elements.length)];
+                container.appendChild(el);
+            }
+        }
+
+        // Анимация чисел
+        function animateNumber(id, value) {
+            anime({
+                targets: `#${id}`,
+                innerHTML: [document.getElementById(id).innerHTML, value],
+                round: 1,
+                easing: 'easeOutElastic(1, .5)',
+                duration: 1200,
+                update: function(anim) {
+                    anim.animatables[0].target.style.transform = `rotate(${Math.sin(anim.progress * 0.1) * 5}deg)`;
+                }
+            });
+        }
+
+        // Обновление счетчика
+        function updateCounter() {
+            const now = new Date();
+            const target = new Date(now.getFullYear(), 4, 1);
+            if(now > target) target.setFullYear(target.getFullYear() + 1);
+            
+            const diff = target - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            animateNumber('days', days);
+            animateNumber('hours', hours);
+            animateNumber('minutes', minutes);
+            animateNumber('seconds', seconds);
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            createSummerElements();
+            updateCounter();
+            setInterval(updateCounter, 1000);
+
+            // Анимация появления карточек
+            anime({
+                targets: '.time-card',
+                opacity: [0, 1],
+                translateY: [50, 0],
+                scale: [0.9, 1],
+                delay: anime.stagger(100),
+                duration: 800,
+                easing: 'easeOutBack(1.5)'
+            });
+
+            // Параллакс эффект для элементов
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                
+                anime({
+                    targets: '.time-card',
+                    translateX: x,
+                    translateY: y,
+                    rotate: x * 0.5,
+                    duration: 3000,
+                    easing: 'easeOutQuad'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
